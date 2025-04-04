@@ -13,6 +13,7 @@ vim.cmd("map <C-b> :lua require'dap'.toggle_breakpoint()")
 vim.call('plug#begin')
 
   Plug('neoclide/coc.nvim', {['branch'] = 'release'})
+  Plug('neoclide/coc-java', {['do'] = 'yarn install --frozen-lockfile'})
   Plug('xiyaowong/transparent.nvim')
   Plug('preservim/nerdtree')
   Plug('folke/tokyonight.nvim')
@@ -42,6 +43,14 @@ require('settings.plugins.colorschemes.catppuccin')
 require('settings.plugins.coc-nvim')
 require('settings.plugins.telescope')
 
+-- Настройка coc-java
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "java",
+  callback = function()
+    vim.bo.omnifunc = "coc#refresh"
+    vim.bo.formatexpr = "CocAction('formatSelected')"
+  end
+})
 -- vim.opt.clipboard:append("unnamedplus")
 
 vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
